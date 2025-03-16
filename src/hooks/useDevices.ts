@@ -11,3 +11,10 @@ export const useDevices = () => {
     usingFallback,
   };
 };
+
+export function useDevice(id: string) {
+  const { getDeviceById, isLoading, error, usingFallback } = useContext(DevicesContext);
+  const device = getDeviceById(id);
+
+  return { device, isLoading, error, usingFallback };
+}

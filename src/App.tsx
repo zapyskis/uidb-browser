@@ -5,18 +5,15 @@ import './App.css';
 
 import { Outlet } from '@tanstack/react-router';
 import Header from './components/layout/Header';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 function App() {
   return (
     <div className="flex flex-col h-full">
       <Header />
       <main className="flex w-full relative flex-1 flex-col min-h-0">
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto h-full">
           <Outlet />
         </div>
-
-        <TanStackRouterDevtools />
       </main>
     </div>
   );

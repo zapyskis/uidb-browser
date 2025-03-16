@@ -63,3 +63,10 @@ body {
     }
   }
 }
+
+@theme {
+  --color-u-neutral-00: hsla(0, 0%, 100%, 1);
+  --color-u-neutral-01: hsla(214, 8%, 98%, 1);
+  --color-u-neutral-02: hsla(214, 8%, 96%, 1);
+  --color-u-neutral-03: hsla(214, 8%, 94%, 1);
+}
