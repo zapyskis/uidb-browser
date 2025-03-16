@@ -6,7 +6,10 @@ export interface Device {
   };
   shortnames: string[];
   abbrev: string;
-  name: string;
+  product: {
+    abbrev: string;
+    name: string;
+  };
   images?: {
     default?: string;
     [key: string]: string | undefined;
