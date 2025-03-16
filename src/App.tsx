@@ -2,9 +2,12 @@ import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import { useDevices } from './hooks/useDevices';
 
 function App() {
   const [count, setCount] = useState(0);
+  const { devices } = useDevices();
+  console.log(devices);
 
   return (
     <>
