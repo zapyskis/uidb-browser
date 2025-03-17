@@ -1,7 +1,7 @@
 import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router';
-import DevicesListPage from './DevicesListPage';
-import DeviceDetaislPage from './DeviceDetailsPage';
-import App from '../App';
+import { DevicesListPage } from './DevicesListPage';
+import { DeviceDetailsPage } from './DeviceDetailsPage';
+import { App } from '../App';
 
 export const rootRoute = createRootRoute({
   component: App,
@@ -16,7 +16,7 @@ export const devicesListRoute = createRoute({
 export const deviceDetailsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/device/$deviceId',
-  component: DeviceDetaislPage,
+  component: DeviceDetailsPage,
 });
 
 const routeTree = rootRoute.addChildren([devicesListRoute, deviceDetailsRoute]);

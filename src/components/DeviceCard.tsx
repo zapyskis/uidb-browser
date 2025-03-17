@@ -2,41 +2,53 @@ import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { Device } from '../types/device';
 import { Text } from '@ubnt/ui-components/aria';
-import Tag from './Tag';
+import { Tag } from './Tag';
 import { DeviceImage } from './DeviceImage';
 
-const DEVICE_IMAGE_SIZE = 100;
+const IMAGE_SIZE = 100;
+const CARD_HEIGHT = 172;
+
+const STYLES = {
+  card: 'overflow-hidden flex flex-col w-full rounded-lg border border-u-neutral-03',
+  cardLink: 'group',
+  imageContainer: 'relative h-[100px] flex items-center justify-center bg-u-neutral-01 group-hover:bg-u-neutral-02',
+  tag: 'absolute top-[3px] right-[3px]',
+  noImage: 'text-gray-400',
+  contentContainer: 'flex-1 group-hover:bg-u-neutral-01',
+  content: 'flex flex-col justify-between h-full p-2',
+  shortnames: 'text-xs text-gray-500 truncate',
+};
 
 interface Props {
   device: Device;
 }
 
-const DeviceCard: React.FC<Props> = ({ device }) => {
+const NoImage: React.FC = () => <div className={STYLES.noImage}>No image</div>;
+
+const DeviceContent: React.FC<{ device: Device }> = ({ device }) => (
+  <div className={STYLES.content}>
+    <Text color="text-1" variant="body-primary" style={{ lineHeight: 1 }}>
+      {device.product.name}
+    </Text>
+    {device.shortnames && device.shortnames.length > 0 && (
+      <div className={STYLES.shortnames}>{device.shortnames.join(', ')}</div>
+    )}
+  </div>
+);
+
+export const DeviceCard: React.FC<Props> = ({ device }) => {
   return (
-    <Link to="/device/$deviceId" params={{ deviceId: device.id }} className="group">
-      <div className="overflow-hidden flex flex-col w-full h-[172px] rounded-lg border border-u-neutral-03">
-        <div className="relative h-[100px] flex items-center justify-center bg-u-neutral-01 group-hover:bg-u-neutral-02">
-          <Tag className="absolute top-[3px] right-[3px]" text={device.line.name} />
-          {device.images?.default ? (
-            <DeviceImage size={DEVICE_IMAGE_SIZE} deviceId={device.id} />
-          ) : (
-            <div className="text-gray-400">No image</div>
-          )}
+    <Link to="/device/$deviceId" params={{ deviceId: device.id }} className={STYLES.cardLink}>
+      <div className={STYLES.card} style={{ height: CARD_HEIGHT }}>
+        <div className={STYLES.imageContainer}>
+          <Tag className={STYLES.tag} text={device.line.name} />
+          {device.images?.default ? <DeviceImage size={IMAGE_SIZE} deviceId={device.id} /> : <NoImage />}
         </div>
 
-        <div className="flex-1 group-hover:bg-u-neutral-01">
-          <div className="flex flex-col justify-between h-full p-2">
-            <Text color="text-1" variant="body-primary">
-              {device.product.name}
-            </Text>
-            {device.shortnames && device.shortnames.length > 0 && (
-              <div className="text-xs text-gray-500 truncate">{device.shortnames.join(', ')}</div>
-            )}
-          </div>
+        <div className={STYLES.contentContainer}>
+          <DeviceContent device={device} />
         </div>
       </div>
     </Link>
   );
 };
-
-export default DeviceCard;

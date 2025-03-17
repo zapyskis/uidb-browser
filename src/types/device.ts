@@ -14,6 +14,15 @@ export interface Device {
     default?: string;
     [key: string]: string | undefined;
   };
+  unifi?: {
+    network?: {
+      numberOfPorts?: number;
+      ethernetMaxSpeedMegabitsPerSecond?: number;
+      power?: {
+        capacity?: number;
+      };
+    };
+  };
 }
 
 export interface UIDBResponse {

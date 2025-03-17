@@ -4,7 +4,6 @@
   height: 100%;
   width: 100%;
   position: relative;
-  overflow: hidden;
 }
 
 html,
@@ -32,8 +31,8 @@ body {
     }
 
     ::-webkit-scrollbar {
-      height: 16px;
-      width: 16px;
+      height: 18px;
+      width: 18px;
       background-color: rgba(255, 255, 255, 0);
     }
 
@@ -53,7 +52,7 @@ body {
     }
 
     ::-webkit-scrollbar-thumb {
-      background-color: rgba(60, 60, 60, 0.15);
+      background-color: rgba(60, 60, 60, 0.08);
       &:hover {
         background-color: rgba(60, 60, 60, 0.2);
       }
@@ -65,6 +64,11 @@ body {
 }
 
 @theme {
+  --color-u-text-1: hsla(214, 8%, 14%, 1);
+  --color-u-text-2: hsla(214, 8%, 34%, 1);
+  --color-u-text-3: hsla(214, 8%, 54%, 1);
+  --color-u-text-4: hsla(214, 8%, 78%, 1);
+
   --color-u-neutral-00: hsla(0, 0%, 100%, 1);
   --color-u-neutral-01: hsla(214, 8%, 98%, 1);
   --color-u-neutral-02: hsla(214, 8%, 96%, 1);
