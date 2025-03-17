@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDevices } from '../hooks/useDevices';
 import { CardView } from '../components/CardView';
 import { Toolbar } from '../components/Toolbar';
@@ -11,8 +11,6 @@ const STYLES = {
   errorContainer: 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4',
   errorTitle: 'font-bold mr-2',
 };
-
-type ViewMode = 'table' | 'card';
 
 interface LoadingStateProps {
   message?: string;
@@ -34,16 +32,16 @@ const ErrorState: React.FC<ErrorStateProps> = ({ error }) => (
 );
 
 interface DeviceViewProps {
-  viewMode: ViewMode;
   devices: Device[];
 }
 
-const DeviceView: React.FC<DeviceViewProps> = ({ viewMode, devices }) =>
-  viewMode === 'table' ? <TableView devices={devices} /> : <CardView devices={devices} />;
+const DeviceView: React.FC<DeviceViewProps> = ({ devices }) => {
+  const { viewMode } = useDevices();
+  return viewMode === 'table' ? <TableView devices={devices} /> : <CardView devices={devices} />;
+};
 
 export const DevicesListPage: React.FC = () => {
-  const { devices, isLoading, error } = useDevices();
-  const [viewMode, setViewMode] = useState<ViewMode>('table');
+  const { devices, isLoading, error, viewMode, setViewMode } = useDevices();
 
   if (isLoading) {
     return <LoadingState />;
@@ -56,7 +54,7 @@ export const DevicesListPage: React.FC = () => {
   return (
     <div className={STYLES.container}>
       <Toolbar viewMode={viewMode} onViewModeChange={setViewMode} />
-      <DeviceView viewMode={viewMode} devices={devices} />
+      <DeviceView devices={devices} />
     </div>
   );
 };

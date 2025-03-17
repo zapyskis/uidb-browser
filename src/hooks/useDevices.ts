@@ -12,6 +12,8 @@ export const useDevices = () => {
     setSelectedProductLines,
     searchTerm,
     setSearchTerm,
+    viewMode,
+    setViewMode,
   } = useContext(DevicesContext);
 
   const productLines = useMemo(() => {
@@ -30,6 +32,8 @@ export const useDevices = () => {
     setSelectedProductLines,
     searchTerm,
     setSearchTerm,
+    viewMode,
+    setViewMode,
   };
 };
 

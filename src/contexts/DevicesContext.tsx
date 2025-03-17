@@ -3,6 +3,9 @@ import { Device } from '../types/device';
 import { fetchUidbData } from '../api/uidbApi';
 import FlexSearch from 'flexsearch';
 
+type ViewMode = 'table' | 'card';
+const VIEW_MODE_KEY = 'deviceListViewMode';
+
 interface DevicesContextType {
   devices: Device[];
   filteredDevices: Device[];
@@ -15,6 +18,8 @@ interface DevicesContextType {
   setSelectedProductLines: (lines: string[]) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
 }
 
 export const DevicesContext = createContext<DevicesContextType>({
@@ -29,6 +34,8 @@ export const DevicesContext = createContext<DevicesContextType>({
   setSelectedProductLines: () => {},
   searchTerm: '',
   setSearchTerm: () => {},
+  viewMode: 'table',
+  setViewMode: () => {},
 });
 
 const normalizeDevicesById = (devices: Device[]): Record<string, Device> => {
@@ -48,6 +55,15 @@ export const DevicesProvider = ({ children }: { children: ReactNode }) => {
   const [usingFallback, setUsingFallback] = useState(false);
   const [selectedProductLines, setSelectedProductLines] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [viewMode, setViewModeState] = useState<ViewMode>(() => {
+    const savedMode = localStorage.getItem(VIEW_MODE_KEY);
+    return (savedMode as ViewMode) || 'table';
+  });
+
+  const setViewMode = (mode: ViewMode) => {
+    localStorage.setItem(VIEW_MODE_KEY, mode);
+    setViewModeState(mode);
+  };
 
   const searchIndex = useMemo(() => {
     if (devices.length === 0) return null;
@@ -132,6 +148,8 @@ export const DevicesProvider = ({ children }: { children: ReactNode }) => {
         setSelectedProductLines,
         searchTerm,
         setSearchTerm,
+        viewMode,
+        setViewMode,
       }}
     >
       {children}
