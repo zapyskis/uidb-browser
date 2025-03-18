@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Autocomplete, TextField, Paper, InputAdornment } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useDevices } from '../hooks/useDevices';
@@ -161,10 +161,7 @@ const DeviceCount: React.FC<{ count: number }> = ({ count }) => (
 export const Search = ({ onSelect }: Props) => {
   const { devices, setSearchTerm, searchTerm } = useDevices();
 
-  const [value, setValue] = useState<Device | null>(() => {
-    if (!searchTerm) return null;
-    return devices.find((device) => device.product.name.toLowerCase().includes(searchTerm.toLowerCase())) || null;
-  });
+  const [value, setValue] = useState<Device | null>(null);
 
   const [inputValue, setInputValue] = useState(searchTerm);
   const searchWidth = useSearchWidth();
@@ -176,12 +173,6 @@ export const Search = ({ onSelect }: Props) => {
 
     return () => clearTimeout(timer);
   }, [inputValue, setSearchTerm]);
-
-  const uniqueDevices = useMemo(
-    () =>
-      devices.filter((device, index, self) => index === self.findIndex((d) => d.product.name === device.product.name)),
-    [devices],
-  );
 
   const handleInputChange = useCallback((_event: unknown, newInputValue: string) => {
     setInputValue(newInputValue);
@@ -207,7 +198,7 @@ export const Search = ({ onSelect }: Props) => {
         inputValue={inputValue}
         onInputChange={handleInputChange}
         onChange={handleChange}
-        options={uniqueDevices}
+        options={devices}
         freeSolo
         noOptionsText="No Results"
         getOptionLabel={(option: Device | string) => (typeof option === 'string' ? option : option.product.name)}
