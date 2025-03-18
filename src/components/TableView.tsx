@@ -51,13 +51,29 @@ const getTableColumns = () => [
     enableSorting: false,
   },
   {
-    id: 'sku',
+    id: 'shortnames',
     header: 'Short Names',
     enableSorting: false,
     minSize: 300,
     cell: ({ row: { original: device } }: { row: { original: Device } }) => (
       <ShortNames shortnames={device.shortnames} />
     ),
+  },
+  {
+    accessorKey: 'sku',
+    id: 'sku',
+    header: 'SKU',
+    enableSorting: false,
+    minSize: 100,
+    maxSize: 120,
+  },
+  {
+    accessorKey: 'sysid',
+    id: 'sysid',
+    header: 'SysID',
+    enableSorting: false,
+    minSize: 100,
+    maxSize: 120,
   },
 ];
 

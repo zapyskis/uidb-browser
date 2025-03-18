@@ -27,7 +27,12 @@ const NoImage: React.FC = () => <div className={STYLES.noImage}>No image</div>;
 
 const DeviceContent: React.FC<{ device: Device }> = ({ device }) => (
   <div className={STYLES.content}>
-    <Text color="text-1" variant="body-primary" style={{ lineHeight: 1 }}>
+    <Text
+      color="text-1"
+      title={device.product.name}
+      variant="body-primary"
+      style={{ lineHeight: 1, maxHeight: '30px' }}
+    >
       {device.product.name}
     </Text>
     {device.shortnames && device.shortnames.length > 0 && (

@@ -4,6 +4,7 @@ import { CardView } from '../components/CardView';
 import { Toolbar } from '../components/Toolbar';
 import { TableView } from '../components/TableView';
 import { Device } from '../types/device';
+import { ErrorPage_Default } from '@ubnt/ui-components/aria';
 
 const STYLES = {
   container: 'toolbar h-full space-y-8',
@@ -37,6 +38,11 @@ interface DeviceViewProps {
 
 const DeviceView: React.FC<DeviceViewProps> = ({ devices }) => {
   const { viewMode } = useDevices();
+
+  if (devices.length === 0) {
+    return <ErrorPage_Default title="No Devices Found" description="No devices found for your search." />;
+  }
+
   return viewMode === 'table' ? <TableView devices={devices} /> : <CardView devices={devices} />;
 };
 
