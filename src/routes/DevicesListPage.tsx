@@ -53,8 +53,10 @@ export const DevicesListPage: React.FC = () => {
 
   return (
     <div className={STYLES.container}>
-      <Toolbar viewMode={viewMode} onViewModeChange={setViewMode} />
-      <DeviceView devices={devices} />
+      <Toolbar className="pl-8 pr-8" viewMode={viewMode} onViewModeChange={setViewMode} />
+      <div className="pl-8">
+        <DeviceView devices={devices} />
+      </div>
     </div>
   );
 };

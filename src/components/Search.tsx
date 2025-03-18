@@ -167,8 +167,6 @@ export const Search = ({ onSelect }: Props) => {
     [devices],
   );
 
-  const limitedDevices = useMemo(() => uniqueDevices.slice(0, AUTOCOMPLETE_LIMIT), [uniqueDevices]);
-
   const handleInputChange = useCallback(
     (_event: unknown, newInputValue: string) => {
       setInputValue(newInputValue);
@@ -193,7 +191,7 @@ export const Search = ({ onSelect }: Props) => {
         inputValue={inputValue}
         onInputChange={handleInputChange}
         onChange={handleChange}
-        options={limitedDevices}
+        options={uniqueDevices}
         getOptionLabel={(option: Device) => option.product.name}
         renderOption={(props, option: Device) => (
           <li {...props} key={option.id}>

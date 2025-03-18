@@ -9,10 +9,7 @@ import { Header } from './components/layout/Header';
 const STYLES = {
   container: 'flex flex-col h-full',
   main: 'flex w-full relative flex-1 flex-col min-h-0',
-  content: 'h-full',
-  contentSpacing: {
-    margin: '16px 32px',
-  },
+  content: 'h-full mt-8 mb-8',
 };
 
 interface MainContentProps {
@@ -21,9 +18,7 @@ interface MainContentProps {
 
 const MainContent: React.FC<MainContentProps> = ({ children }) => (
   <main className={STYLES.main}>
-    <div className={STYLES.content} style={STYLES.contentSpacing}>
-      {children}
-    </div>
+    <div className={STYLES.content}>{children}</div>
   </main>
 );
 

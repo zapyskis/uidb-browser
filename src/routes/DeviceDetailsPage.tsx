@@ -10,7 +10,7 @@ import { ErrorPage_Default } from '@ubnt/ui-components/aria';
 import { Device } from '../types/device';
 
 const STYLES = {
-  container: 'min-h-screen overflow-auto flex flex-col',
+  container: 'min-h-screen overflow-auto flex flex-col pr-8 pl-8',
   contentWrapper: 'flex flex-col md:flex-row w-full max-w-[768px] mx-auto px-4 md:px-0 mt-8',
   imageContainer: 'flex w-full md:w-[292px] h-[292px] bg-u-neutral-01 items-center justify-center rounded-lg',
   detailsContainer: 'flex-1 mt-4 md:mt-0 md:pl-8',

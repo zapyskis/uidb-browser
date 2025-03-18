@@ -10,6 +10,7 @@ type ViewMode = 'table' | 'card';
 interface ToolbarProps {
   viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;
+  className?: string;
 }
 
 const STYLES = {
@@ -44,15 +45,15 @@ const FilterButton: React.FC<{ open?: boolean; hasFilters: boolean }> = ({ open,
   </button>
 );
 
-export const Toolbar: React.FC<ToolbarProps> = ({ viewMode, onViewModeChange }) => {
-  const { productLines, selectedProductLines, setSelectedProductLines, setSearchTerm } = useDevices();
+export const Toolbar: React.FC<ToolbarProps> = ({ viewMode, onViewModeChange, className }) => {
+  const { productLines, selectedProductLines, setSelectedProductLines } = useDevices();
 
   const renderFilterToggle = (open?: boolean): ReactNode => (
     <FilterButton open={open} hasFilters={selectedProductLines.length > 0} />
   );
 
   return (
-    <div className={STYLES.toolbar} role="toolbar">
+    <div className={`${STYLES.toolbar} ${className}`}>
       <div className={STYLES.searchContainer}>
         <Search />
       </div>
