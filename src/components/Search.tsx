@@ -154,10 +154,23 @@ const DeviceCount: React.FC<{ count: number }> = ({ count }) => (
 );
 
 export const Search = ({ onSelect }: Props) => {
-  const [value, setValue] = useState<Device | null>(null);
-  const [inputValue, setInputValue] = useState('');
-  const { devices, setSearchTerm } = useDevices();
+  const { devices, setSearchTerm, searchTerm } = useDevices();
+
+  const [value, setValue] = useState<Device | null>(() => {
+    if (!searchTerm) return null;
+    return devices.find((device) => device.product.name.toLowerCase().includes(searchTerm.toLowerCase())) || null;
+  });
+
+  const [inputValue, setInputValue] = useState(searchTerm);
   const searchWidth = useSearchWidth();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm(inputValue);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [inputValue, setSearchTerm]);
 
   const uniqueDevices = useMemo(
     () =>
@@ -165,13 +178,9 @@ export const Search = ({ onSelect }: Props) => {
     [devices],
   );
 
-  const handleInputChange = useCallback(
-    (_event: unknown, newInputValue: string) => {
-      setInputValue(newInputValue);
-      setSearchTerm(newInputValue);
-    },
-    [setSearchTerm],
-  );
+  const handleInputChange = useCallback((_event: unknown, newInputValue: string) => {
+    setInputValue(newInputValue);
+  }, []);
 
   const handleChange = useCallback(
     (_event: unknown, newValue: Device | null) => {
