@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useDevices } from '../hooks/useDevices';
 import { DeviceImage } from '../components/DeviceImage';
@@ -147,6 +147,19 @@ export const DeviceDetailsPage: React.FC = () => {
       navigate({ to: '/device/$deviceId', params: { deviceId: nextDevice.id } });
     }
   };
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (event.key === 'ArrowRight') {
+        handleNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [deviceId, allDevices]);
 
   if (isLoading) {
     return <LoadingState />;
