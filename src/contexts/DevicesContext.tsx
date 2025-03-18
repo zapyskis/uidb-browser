@@ -56,12 +56,20 @@ export const DevicesProvider = ({ children }: { children: ReactNode }) => {
   const [selectedProductLines, setSelectedProductLines] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewModeState] = useState<ViewMode>(() => {
-    const savedMode = localStorage.getItem(VIEW_MODE_KEY);
-    return (savedMode as ViewMode) || 'table';
+    try {
+      const savedMode = localStorage.getItem(VIEW_MODE_KEY);
+      return (savedMode as ViewMode) || 'table';
+    } catch {
+      return 'table';
+    }
   });
 
   const setViewMode = (mode: ViewMode) => {
-    localStorage.setItem(VIEW_MODE_KEY, mode);
+    try {
+      localStorage.setItem(VIEW_MODE_KEY, mode);
+    } catch {
+      // no-op
+    }
     setViewModeState(mode);
   };
 
