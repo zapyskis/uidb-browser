@@ -54,7 +54,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ viewMode, onViewModeChange }) 
   return (
     <div className={STYLES.toolbar} role="toolbar">
       <div className={STYLES.searchContainer}>
-        <Search onSearch={setSearchTerm} />
+        <Search />
       </div>
 
       <div className={STYLES.controlsContainer}>
