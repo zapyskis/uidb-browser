@@ -88,6 +88,11 @@ const StyledPaper = styled(Paper)({
       borderRadius: '2px',
     },
   },
+  '& .MuiAutocomplete-noOptions': {
+    ...COMMON_STYLES,
+    padding: '8px 12px',
+    color: designToken.motifs.light['desktop-color-text-3'],
+  },
 });
 
 const StyledTextField = styled(TextField)({
@@ -183,22 +188,29 @@ export const Search = ({ onSelect }: Props) => {
   }, []);
 
   const handleChange = useCallback(
-    (_event: unknown, newValue: Device | null) => {
-      setValue(newValue);
-      onSelect?.(newValue);
+    (_event: unknown, newValue: string | Device | null) => {
+      if (typeof newValue === 'string') {
+        setValue(null);
+        onSelect?.(null);
+      } else {
+        setValue(newValue);
+        onSelect?.(newValue);
+      }
     },
     [onSelect],
   );
 
   return (
     <div className={STYLES.container}>
-      <Autocomplete<Device>
+      <Autocomplete
         value={value}
         inputValue={inputValue}
         onInputChange={handleInputChange}
         onChange={handleChange}
         options={uniqueDevices}
-        getOptionLabel={(option: Device) => option.product.name}
+        freeSolo
+        noOptionsText="No Results"
+        getOptionLabel={(option: Device | string) => (typeof option === 'string' ? option : option.product.name)}
         renderOption={(props, option: Device) => (
           <li {...props} key={option.id}>
             <div className={STYLES.optionContainer}>
