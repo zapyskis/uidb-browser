@@ -149,7 +149,7 @@ const highlightMatch = (text: string, searchText: string, deviceId: string) => {
 
 const DeviceCount: React.FC<{ count: number }> = ({ count }) => (
   <Text variant="caption" color="text-4" className={STYLES.deviceCount}>
-    {count} Devices
+    {count} {count === 1 ? 'Device' : 'Devices'}
   </Text>
 );
 
