@@ -7,8 +7,6 @@ import { SearchIconL } from '@ubnt/icons';
 import { designToken } from '@ubnt/ui-components';
 import { Text } from '@ubnt/ui-components/aria';
 
-const AUTOCOMPLETE_LIMIT = 10;
-
 const STYLES = {
   container: 'flex flex-col sm:flex-row items-start sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 w-full',
   deviceCount: 'whitespace-nowrap',
@@ -185,8 +183,7 @@ export const Search = ({ onSelect }: Props) => {
 
   return (
     <div className={STYLES.container}>
-      <Autocomplete<Device, false, false, false>
-        freeSolo={true}
+      <Autocomplete<Device>
         value={value}
         inputValue={inputValue}
         onInputChange={handleInputChange}
@@ -217,11 +214,15 @@ export const Search = ({ onSelect }: Props) => {
                   <SearchIconL />
                 </InputAdornment>
               ),
+              endAdornment: null,
             }}
           />
         )}
         sx={{
           width: searchWidth,
+          '& .MuiAutocomplete-endAdornment': {
+            display: 'none',
+          },
         }}
       />
       <DeviceCount count={devices.length} />
