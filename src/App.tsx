@@ -5,6 +5,7 @@ import './App.css';
 
 import { Outlet } from '@tanstack/react-router';
 import { Header } from './components/layout/Header';
+import { ToastProvider } from '@ubnt/ui-components/Toast';
 
 const STYLES = {
   container: 'flex flex-col h-full',
@@ -24,11 +25,13 @@ const MainContent: React.FC<MainContentProps> = ({ children }) => (
 
 export const App: React.FC = () => {
   return (
-    <div className={STYLES.container}>
-      <Header />
-      <MainContent>
-        <Outlet />
-      </MainContent>
-    </div>
+    <ToastProvider>
+      <div className={STYLES.container}>
+        <Header />
+        <MainContent>
+          <Outlet />
+        </MainContent>
+      </div>
+    </ToastProvider>
   );
 };

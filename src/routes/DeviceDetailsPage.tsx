@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, ContextType, useCallback } from 'react';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useDevices } from '../hooks/useDevices';
 import { DeviceImage } from '../components/DeviceImage';
@@ -8,6 +8,9 @@ import Button from '@ubnt/ui-components/Button/Button';
 import { ToolbarDetails } from '../components/ToolbarDetails';
 import { ErrorPage_Default } from '@ubnt/ui-components/aria';
 import { Device } from '../types/device';
+import { EntityToast, ToastContext } from '@ubnt/ui-components/Toast';
+import { InfoIconL } from '@ubnt/icons';
+import { getSetting, setSetting } from '../utils/localStorage';
 
 const STYLES = {
   container: 'min-h-screen overflow-auto flex flex-col pr-8 pl-8',
@@ -124,6 +127,7 @@ export const DeviceDetailsPage: React.FC = () => {
   const { deviceId } = useParams({ from: '/device/$deviceId' });
   const { allDevices, isLoading, error } = useDevices();
   const navigate = useNavigate();
+  const { createNotification, removeNotification } = useContext<ContextType<typeof ToastContext>>(ToastContext);
 
   const getNeighborDevices = () => {
     const currentIndex = allDevices.findIndex((d) => d.id === deviceId);
@@ -136,17 +140,49 @@ export const DeviceDetailsPage: React.FC = () => {
   const device = allDevices.find((d) => d.id === deviceId);
   const { prevDevice, nextDevice } = getNeighborDevices();
 
-  const handlePrevious = () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const doNotShowKeyboardTip = getSetting('doNotShowKeyboardTip');
+
+      if (doNotShowKeyboardTip !== 'true') {
+        createNotification(
+          <div id="keyboardTip">
+            <EntityToast
+              duration={10000}
+              title="Keyboard Navigation Tip"
+              details={'Use the left and right arrow keys to navigate easily.'}
+              icon={InfoIconL}
+              primaryButton={{
+                label: 'Do not show again',
+                onClick: () => {
+                  setSetting('doNotShowKeyboardTip', 'true');
+                  removeNotification('keyboardTip');
+                },
+              }}
+              onClose={(_e, id) => removeNotification(id || '')}
+            />
+          </div>,
+        );
+      }
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+      removeNotification('keyboardTip');
+    };
+  }, [createNotification, removeNotification]);
+
+  const handlePrevious = useCallback(() => {
     if (prevDevice) {
       navigate({ to: '/device/$deviceId', params: { deviceId: prevDevice.id } });
     }
-  };
+  }, [prevDevice, navigate]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (nextDevice) {
       navigate({ to: '/device/$deviceId', params: { deviceId: nextDevice.id } });
     }
-  };
+  }, [nextDevice, navigate]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -159,7 +195,7 @@ export const DeviceDetailsPage: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [deviceId, allDevices]);
+  }, [handleNext, handlePrevious]);
 
   if (isLoading) {
     return <LoadingState />;

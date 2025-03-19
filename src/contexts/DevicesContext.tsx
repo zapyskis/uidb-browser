@@ -2,9 +2,10 @@ import { createContext, useState, useEffect, ReactNode, useMemo } from 'react';
 import { Device } from '../types/device';
 import { fetchUidbData } from '../api/uidbApi';
 import FlexSearch from 'flexsearch';
+import { getSetting, setSetting } from '../utils/localStorage';
 
 type ViewMode = 'table' | 'card';
-const VIEW_MODE_KEY = 'deviceListViewMode';
+const VIEW_MODE_KEY = 'view_mode';
 
 interface DevicesContextType {
   devices: Device[];
@@ -56,20 +57,12 @@ export const DevicesProvider = ({ children }: { children: ReactNode }) => {
   const [selectedProductLines, setSelectedProductLines] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewModeState] = useState<ViewMode>(() => {
-    try {
-      const savedMode = localStorage.getItem(VIEW_MODE_KEY);
-      return (savedMode as ViewMode) || 'table';
-    } catch {
-      return 'table';
-    }
+    const savedMode = getSetting(VIEW_MODE_KEY);
+    return (savedMode as ViewMode) || 'table';
   });
 
   const setViewMode = (mode: ViewMode) => {
-    try {
-      localStorage.setItem(VIEW_MODE_KEY, mode);
-    } catch {
-      // no-op
-    }
+    setSetting(VIEW_MODE_KEY, mode);
     setViewModeState(mode);
   };
 
