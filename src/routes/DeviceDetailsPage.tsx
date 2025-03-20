@@ -18,7 +18,7 @@ const STYLES = {
   contentWrapper: 'flex flex-col w-full h-full md:px-8 mt-8 mb-12 overflow-y-auto items-center',
   imageContainer: 'flex md:w-[292px] h-[292px] bg-u-neutral-01 items-center justify-center rounded-lg',
   detailsContainer: 'max-w-[768px] w-full flex flex-col md:flex-row',
-  detailsContent: 'flex-1 ml-4 md:ml-8 mt-4 md:mt-0',
+  detailsContent: 'flex-1 mx-4 md:ml-8 md:mr-0 mt-4 md:mt-0',
   detailRow: 'flex h-[32px] items-center w-full',
   detailLabel: 'whitespace-nowrap text-right',
   detailValue: 'flex-1',
