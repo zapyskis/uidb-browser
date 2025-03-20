@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Autocomplete, TextField, Paper, InputAdornment } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useDevices } from '../hooks/useDevices';
+import { useIsSmallScreen } from '../hooks/useIsSmallScreen';
 import { Device } from '../types/device';
 import { SearchIconL } from '@ubnt/icons';
 import { designToken } from '@ubnt/ui-components';
@@ -16,7 +17,6 @@ const STYLES = {
 };
 
 const BREAKPOINT = {
-  smallScreen: 640,
   defaultWidth: 320,
   mobileWidth: 280,
 };
@@ -28,17 +28,8 @@ const COMMON_STYLES = {
 };
 
 const useSearchWidth = () => {
-  const getSearchWidth = () =>
-    window.innerWidth < BREAKPOINT.smallScreen ? BREAKPOINT.mobileWidth : BREAKPOINT.defaultWidth;
-  const [searchWidth, setSearchWidth] = useState(getSearchWidth());
-
-  useEffect(() => {
-    const handleResize = () => setSearchWidth(getSearchWidth());
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return searchWidth;
+  const isSmallScreen = useIsSmallScreen();
+  return isSmallScreen ? BREAKPOINT.mobileWidth : BREAKPOINT.defaultWidth;
 };
 
 const StyledPaper = styled(Paper)({

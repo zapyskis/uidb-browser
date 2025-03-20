@@ -3,6 +3,7 @@ import Popover, { RenderToggleProps } from '@ubnt/ui-components/Popover/Popover'
 import { Checkbox_Default } from '@ubnt/ui-components/aria/experimental';
 import { Heading } from '@ubnt/ui-components/aria';
 import Button from '@ubnt/ui-components/Button/Button';
+import { useIsSmallScreen } from '../hooks/useIsSmallScreen';
 
 const STYLES = {
   container: '!w-[134px]',
@@ -51,6 +52,7 @@ const ResetButton: React.FC<{ disabled: boolean; onClick: () => void }> = ({ dis
 
 export const FilterPopover: React.FC<Props> = ({ items, onSelectionChange, selectedItems = [], renderToggle }) => {
   const [selected, setSelected] = useState<Set<string>>(new Set(selectedItems));
+  const isSmallScreen = useIsSmallScreen();
 
   useEffect(() => {
     setSelected(new Set(selectedItems));
@@ -87,7 +89,7 @@ export const FilterPopover: React.FC<Props> = ({ items, onSelectionChange, selec
       viewport={false}
       size="auto"
       classNameCard={STYLES.popoverCard}
-      align="bottomLeft"
+      align={isSmallScreen ? 'bottomRight' : 'bottomLeft'}
       toggleOffset={0}
       rootSelector="#root"
       renderToggle={internalRenderToggle}
