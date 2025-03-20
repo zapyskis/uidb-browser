@@ -13,19 +13,18 @@ import { InfoIconL } from '@ubnt/icons';
 import { getSetting, setSetting } from '../utils/localStorage';
 
 const STYLES = {
-  container: 'min-h-screen overflow-auto flex flex-col pr-8 pl-8',
-  contentWrapper: 'flex flex-col md:flex-row w-full max-w-[768px] mx-auto px-4 md:px-0 mt-8',
-  imageContainer: 'flex w-full md:w-[292px] h-[292px] bg-u-neutral-01 items-center justify-center rounded-lg',
-  detailsContainer: 'flex-1 mt-4 md:mt-0 md:pl-8',
-  detailRow: 'flex h-[32px] items-center',
+  container: 'h-full flex flex-col',
+  toolbar: 'px-8',
+  contentWrapper: 'flex flex-col w-full h-full md:px-8 mt-8 mb-12 overflow-y-auto items-center',
+  imageContainer: 'flex md:w-[292px] h-[292px] bg-u-neutral-01 items-center justify-center rounded-lg',
+  detailsContainer: 'max-w-[768px] w-full flex flex-col md:flex-row',
+  detailsContent: 'flex-1 ml-4 md:ml-8 mt-4 md:mt-0',
+  detailRow: 'flex h-[32px] items-center w-full',
   detailLabel: 'whitespace-nowrap text-right',
   detailValue: 'flex-1',
   jsonButton: '!text-sm !mt-6',
-  jsonContainer:
-    'flex mx-auto bg-u-neutral-01 rounded-lg overflow-hidden transition-all duration-300 ease-in-out w-full max-w-[768px] px-4 md:px-0',
-  jsonVisible: 'opacity-100 mt-4 h-[calc(100vh-500px)]',
-  jsonHidden: 'max-h-0 opacity-0',
-  jsonContent: 'p-4 w-full overflow-auto',
+  jsonContainer: 'w-full max-w-[768px] bg-u-neutral-01 rounded-lg px-4 md:px-0 mt-4 mx-auto',
+  jsonContent: 'p-4 w-full whitespace-pre overflow-x-auto',
   loadingContainer: 'flex items-center justify-center h-64',
   loadingSpinner: 'animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto',
   loadingText: 'mt-4 text-gray-600',
@@ -90,34 +89,34 @@ const DeviceDetails: React.FC<DeviceDetailsProps> = ({ device, onNext, onPreviou
 
   return (
     <div className={STYLES.container}>
-      <ToolbarDetails onNext={onNext} onPrevious={onPrevious} />
+      <ToolbarDetails className={STYLES.toolbar} onNext={onNext} onPrevious={onPrevious} />
       <div className={STYLES.contentWrapper}>
-        <div className={STYLES.imageContainer}>
-          <DeviceImage size={IMAGE_SIZE} deviceId={device.id} />
-        </div>
         <div className={STYLES.detailsContainer}>
-          <div>
-            <Heading variant="xlarge-1">{device.product.name}</Heading>
-            <Heading variant="body-secondary">{device.line.name}</Heading>
+          <div className={STYLES.imageContainer}>
+            <DeviceImage size={IMAGE_SIZE} deviceId={device.id} />
           </div>
-          <div className="flex flex-col mt-4">
-            {detailItems.map((item, index) => (
-              <DetailItem key={index} {...item} />
-            ))}
-            <div className="flex justify-start">
-              <Button className={STYLES.jsonButton} variant="inline" onClick={() => setIsJsonVisible(!isJsonVisible)}>
-                {isJsonVisible ? 'Hide JSON Details' : 'See All Details as JSON'}
-              </Button>
+          <div className={STYLES.detailsContent}>
+            <div className="text-center md:text-left">
+              <Heading variant="xlarge-1">{device.product.name}</Heading>
+              <Heading variant="body-secondary">{device.line.name}</Heading>
+            </div>
+            <div className="flex flex-col mt-4 items-center md:items-start">
+              {detailItems.map((item, index) => (
+                <DetailItem key={index} {...item} />
+              ))}
+              <div className="flex justify-center">
+                <Button className={STYLES.jsonButton} variant="inline" onClick={() => setIsJsonVisible(!isJsonVisible)}>
+                  {isJsonVisible ? 'Hide JSON Details' : 'See All Details as JSON'}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div
-        id="json-details"
-        className={`${STYLES.jsonContainer} ${isJsonVisible ? STYLES.jsonVisible : STYLES.jsonHidden}`}
-      >
-        <pre className={STYLES.jsonContent}>{JSON.stringify(device, null, 2)}</pre>
+        {isJsonVisible && (
+          <div id="json-details" className={STYLES.jsonContainer}>
+            <pre className={STYLES.jsonContent}>{JSON.stringify(device, null, 2)}</pre>
+          </div>
+        )}
       </div>
     </div>
   );

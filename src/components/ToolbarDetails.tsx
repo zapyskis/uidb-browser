@@ -44,11 +44,12 @@ const BackButton: React.FC = () => (
 interface Props {
   onPrevious?: () => void;
   onNext?: () => void;
+  className?: string;
 }
 
-export const ToolbarDetails: React.FC<Props> = ({ onPrevious, onNext }) => {
+export const ToolbarDetails: React.FC<Props> = ({ onPrevious, onNext, className }) => {
   return (
-    <div className={STYLES.container} role="toolbar">
+    <div className={`${STYLES.container} ${className || ''}`} role="toolbar">
       <div className={STYLES.backContainer}>
         <BackButton />
       </div>
